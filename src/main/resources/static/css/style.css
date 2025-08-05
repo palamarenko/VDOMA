@@ -325,4 +325,185 @@ body {
     font-size: 12px;
     color: #666;
     line-height: 1.2;
+}
+
+/* Стили для календаря */
+.calendar-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.calendar-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow: hidden;
+    position: relative;
+    z-index: 10001;
+}
+
+.calendar-header {
+    background: #ffb700;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendar-tabs {
+    display: flex;
+    gap: 30px;
+}
+
+.tab {
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 0;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    border-bottom-color: #003580;
+    color: #003580;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+}
+
+.calendar-body {
+    padding: 30px;
+}
+
+.month-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    padding: 10px;
+}
+
+.month-title {
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+}
+
+.calendar-grid {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.month {
+    flex: 1;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.weekdays div {
+    text-align: center;
+    font-weight: 500;
+    color: #666;
+    font-size: 14px;
+    padding: 8px;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.day {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.day:hover {
+    background: #f0f0f0;
+}
+
+.day.selected {
+    background: #003580;
+    color: white;
+}
+
+.day.range {
+    background: #e3f2fd;
+    color: #003580;
+}
+
+.day.other-month {
+    color: #ccc;
+}
+
+.flexibility-options {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.flex-btn {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.flex-btn:hover {
+    border-color: #003580;
+}
+
+.flex-btn.active {
+    background: #003580;
+    color: white;
+    border-color: #003580;
 } 

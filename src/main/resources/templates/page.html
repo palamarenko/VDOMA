@@ -43,7 +43,7 @@
                 <div id="autocomplete" class="autocomplete-dropdown"></div>
             </div>
             
-            <div class="search-section dates">
+            <div class="search-section dates" onclick="openCalendar()">
                 <div class="icon">📅</div>
                 <div class="content">
                     <div class="label">ср, 17 сент. — сб, 20 сент.</div>
@@ -61,14 +61,62 @@
             <button class="search-btn">Найти</button>
         </div>
     </div>
+    
+    <!-- Модальное окно с календарем -->
+    <div id="calendarModal" class="calendar-modal" style="display: none;">
+        <div class="calendar-overlay" onclick="closeCalendar()"></div>
+        <div class="calendar-content">
+            <div class="calendar-header">
+                <div class="calendar-tabs">
+                    <span class="tab active">Календарь</span>
+                </div>
+                <button class="close-btn" onclick="closeCalendar()">✕</button>
+            </div>
+            
+            <div class="calendar-body">
+                <div class="month-navigation">
+                    <button class="nav-btn" onclick="previousMonth()">‹</button>
+                    <div class="month-title">сентябрь 2025 г.</div>
+                    <div class="month-title">октябрь 2025 г.</div>
+                    <button class="nav-btn" onclick="nextMonth()">›</button>
+                </div>
+                
+                <div class="calendar-grid">
+                    <div class="month">
+                        <div class="weekdays">
+                            <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
+                        </div>
+                        <div class="days" id="septemberDays">
+                            <!-- Дни сентября будут добавлены через JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="month">
+                        <div class="weekdays">
+                            <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
+                        </div>
+                        <div class="days" id="octoberDays">
+                            <!-- Дни октября будут добавлены через JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
 </main>
 
+<script src="/js/calendar.js"></script>
+<script src="/js/cityPicker.js"></script>
+
 <!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1N7wbWbOUD503nkjTZWSaKFDKj36M9A4&callback=initMap" async defer></script>
+
+<!-- Календарь -->
 
 <script>
 
-const cities = ['Київ', 'Черкаси', 'Харків'];
-let filteredCities = [];
 
 // Инициализация Google Maps
 function initMap() {
@@ -83,14 +131,14 @@ function initMap() {
             }
         ]
     });
-
+    
     // Добавляем маркеры для городов
     const citiesData = [
         { name: 'Київ', lat: 50.4501, lng: 30.5234 },
         { name: 'Черкаси', lat: 49.4444, lng: 32.0598 },
         { name: 'Харків', lat: 49.9935, lng: 36.2304 }
     ];
-
+    
     citiesData.forEach(city => {
         new google.maps.Marker({
             position: { lat: city.lat, lng: city.lng },
@@ -104,102 +152,9 @@ function initMap() {
     });
 }
 
-// Фильтрация городов по вводу
-function filterCities(input) {
-    console.log('🔍 Фильтрация городов для ввода:', input);
-    const value = input.toLowerCase();
-    filteredCities = cities.filter(city =>
-        city.toLowerCase().includes(value)
-    );
-    console.log('📋 Найденные города:', filteredCities);
-}
 
-    // Показ автодополнения
-    function showAutocomplete(input) {
-        let dropdown = document.getElementById('autocomplete');
-        
-        const rect = input.getBoundingClientRect();
 
-        // Позиционирование под полем ввода
-        dropdown.style.position = 'fixed';
-        dropdown.style.top = 67  + 'px';
-        dropdown.style.left = 25 + 'px';
-        dropdown.style.width = rect.width + 100 + 'px';
-        dropdown.style.backgroundColor = 'white';
-        dropdown.style.border = '1px solid #e0e0e0';
-        dropdown.style.borderRadius = '4px';
-        dropdown.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-        dropdown.style.zIndex = '9999';
-        dropdown.style.display = 'block';
-
-        if (filteredCities.length > 0) {
-            dropdown.innerHTML = filteredCities.map(city => `
-                <div class="autocomplete-item" onclick="selectCity('${city}')">
-                    <div class="item-icon">📍</div>
-                    <div class="item-content">
-                        <div class="item-title">${city}</div>
-                        <div class="item-subtitle">Україна</div>
-                    </div>
-                </div>
-            `).join('');
-        } else {
-            dropdown.style.display = 'none';
-        }
-    }
-
-    // Выбор города
-    function selectCity(city) {
-        document.getElementById('cityInput').value = city;
-        document.getElementById('autocomplete').style.display = 'none';
-    }
-
-    // Очистка поля
-    function clearCity() {
-        document.getElementById('cityInput').value = '';
-        document.getElementById('cityInput').focus();
-        document.getElementById('cityInput').blur();
-    }
-
-    // Инициализация
-    document.addEventListener('DOMContentLoaded', function() {
-        const cityInput = document.getElementById('cityInput');
-        if (!cityInput) {
-            return;
-        }
-        
-        // Установка курсора в конец при клике
-        cityInput.addEventListener('click', function() {
-            // Устанавливаем курсор в конец текста
-            this.setSelectionRange(this.value.length, this.value.length);
-            this.focus();
-        });
-        
-        cityInput.addEventListener('input', function() {
-            filterCities(this.value);
-            showAutocomplete(this);
-        });
-        
-        cityInput.addEventListener('focus', function() {
-            // Устанавливаем курсор в конец при фокусе
-            this.setSelectionRange(this.value.length, this.value.length);
-            filterCities(this.value);
-            showAutocomplete(this);
-        });
-        
-        // Скрытие автодополнения при клике вне поля
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.destination')) {
-                document.getElementById('autocomplete').style.display = 'none';
-            }
-        });
-    });
-
-    // Проверка на ошибки
-    window.addEventListener('error', function(e) {
-        console.error('ОШИБКА JavaScript:', e);
-    });
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1N7wbWbOUD503nkjTZWSaKFDKj36M9A4&callback=initMap" async defer></script>
 
 </body>
 </html>

@@ -4,8 +4,28 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+#map {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
 }
 
 .header {
@@ -101,6 +121,9 @@ body {
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
+
 }
 
 .btn-secondary {
@@ -170,6 +193,8 @@ body {
     font-size: 18px;
     margin-right: 12px;
     opacity: 0.7;
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
 }
 
 .search-section .content {
@@ -183,6 +208,8 @@ body {
     font-size: 14px;
     color: #333;
     font-weight: 500;
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
 }
 
 .clear-btn {
@@ -205,6 +232,8 @@ body {
     color: #666;
     font-size: 10px;
     margin-left: 8px;
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
 }
 
 .search-btn {
@@ -218,6 +247,8 @@ body {
     transition: background-color 0.2s;
     border-radius: 0;
     height: 100%;
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -393,6 +424,8 @@ body {
     font-size: 20px;
     cursor: pointer;
     color: #333;
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
 }
 
 .calendar-body {
@@ -413,12 +446,16 @@ body {
     cursor: pointer;
     color: #333;
     padding: 10px;
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
 }
 
 .month-title {
     font-weight: 600;
     font-size: 18px;
     color: #333;
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
 }
 
 .calendar-grid {
@@ -460,6 +497,8 @@ body {
     justify-content: center;
     border-radius: 50%;
     cursor: pointer;
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
     font-size: 14px;
     transition: all 0.2s;
 }
@@ -503,7 +542,30 @@ body {
 }
 
 .flex-btn.active {
-    background: #003580;
+    background-color: #003580;
     color: white;
-    border-color: #003580;
+}
+
+.calendar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.calendar-footer .btn {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    user-select: none;     /* запрет выделения текста */
+    outline: none;
+    background-color: #003580;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #002a6b;
 } 

@@ -46,19 +46,19 @@
             <div class="search-section dates" onclick="openCalendar()">
                 <div class="icon">📅</div>
                 <div class="content">
-                    <div class="label">ср, 17 сент. — сб, 20 сент.</div>
+                    <div class="label" tabindex="-1">ср, 17 сент. — сб, 20 сент.</div>
                 </div>
             </div>
             
             <div class="search-section guests">
-                <div class="icon">👤</div>
+                <div class="icon" tabindex="-1">👤</div>
                 <div class="content">
-                    <div class="label">2 гостей</div>
-                    <div class="dropdown-arrow">▼</div>
+                    <div class="label" tabindex="-1">2 гостей</div>
+                    <div class="dropdown-arrow" tabindex="-1">▼</div>
                 </div>
             </div>
             
-            <button class="search-btn">Найти</button>
+            <button class="search-btn" tabindex="-1">Знайти</button>
         </div>
     </div>
     
@@ -84,7 +84,7 @@
                 <div class="calendar-grid">
                     <div class="month">
                         <div class="weekdays">
-                            <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
+                            <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>НД</div>
                         </div>
                         <div class="days" id="septemberDays">
                             <!-- Дни сентября будут добавлены через JavaScript -->
@@ -93,7 +93,7 @@
                     
                     <div class="month">
                         <div class="weekdays">
-                            <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
+                            <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>НД</div>
                         </div>
                         <div class="days" id="octoberDays">
                             <!-- Дни октября будут добавлены через JavaScript -->
@@ -101,7 +101,9 @@
                     </div>
                 </div>
                 
-
+                <div class="calendar-footer">
+                    <button class="btn btn-primary" onclick="confirmDateSelection()">ОК</button>
+                </div>
             </div>
         </div>
     </div>
@@ -109,52 +111,12 @@
 
 <script src="/js/calendar.js"></script>
 <script src="/js/cityPicker.js"></script>
-
-<!-- Google Maps API -->
+<script src="/js/mainMap.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1N7wbWbOUD503nkjTZWSaKFDKj36M9A4&callback=initMap" async defer></script>
 
 <!-- Календарь -->
 
-<script>
 
-
-// Инициализация Google Maps
-function initMap() {
-    const map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 50.4501, lng: 30.5234 }, // Киев
-        zoom: 10,
-        styles: [
-            {
-                featureType: 'poi',
-                elementType: 'labels',
-                stylers: [{ visibility: 'off' }]
-            }
-        ]
-    });
-    
-    // Добавляем маркеры для городов
-    const citiesData = [
-        { name: 'Київ', lat: 50.4501, lng: 30.5234 },
-        { name: 'Черкаси', lat: 49.4444, lng: 32.0598 },
-        { name: 'Харків', lat: 49.9935, lng: 36.2304 }
-    ];
-    
-    citiesData.forEach(city => {
-        new google.maps.Marker({
-            position: { lat: city.lat, lng: city.lng },
-            map: map,
-            title: city.name,
-            icon: {
-                url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-                scaledSize: new google.maps.Size(30, 30)
-            }
-        });
-    });
-}
-
-
-
-</script>
 
 </body>
 </html>

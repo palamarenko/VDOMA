@@ -1,5 +1,5 @@
 // Обработка формы регистрации
-document.getElementById('registerForm').addEventListener('submit', function(e) {
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const firstName = document.getElementById('firstName').value.trim();
@@ -35,14 +35,62 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         return;
     }
     
-    // Здесь будет отправка данных на сервер
-    console.log('Реєстрація:', { firstName, lastName, email, phone, password });
+    // Показываем индикатор загрузки
+    const submitBtn = this.querySelector('.login-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Завантаження...';
+    submitBtn.disabled = true;
     
-    // Имитация успешной регистрации
-    showSuccess('Реєстрація успішна!');
-    setTimeout(() => {
-        window.location.href = '/'; // Перенаправление на главную
-    }, 1000);
+    try {
+        // Отправляем запрос на сервер
+        const response = await fetch('/api/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                password: password
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showSuccess(data.message);
+            // Сохраняем данные пользователя в localStorage
+            localStorage.setItem('user', JSON.stringify(data.user));
+            setTimeout(() => {
+                window.location.href = '/'; // Перенаправление на главную
+            }, 1000);
+        } else {
+            // Обработка различных типов ошибок при регистрации
+            if (data.message && data.message.includes('вже існує')) {
+                showError('Користувач з таким email вже існує. Спробуйте увійти або використайте інший email.');
+            } else if (data.message && data.message.includes('email')) {
+                showError('Невірний формат email. Перевірте правильність введення.');
+            } else if (data.message && data.message.includes('пароль')) {
+                showError('Пароль повинен містити мінімум 6 символів.');
+            } else {
+                showError(data.message || 'Помилка реєстрації. Спробуйте ще раз.');
+            }
+        }
+        
+    } catch (error) {
+        console.error('Ошибка при регистрации:', error);
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            showError('Помилка з\'єднання з сервером. Перевірте інтернет-з\'єднання.');
+        } else {
+            showError('Помилка сервера. Спробуйте пізніше.');
+        }
+    } finally {
+        // Восстанавливаем кнопку
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
 });
 
 // Google Sign-Up
@@ -84,6 +132,24 @@ document.getElementById('phone').addEventListener('input', function(e) {
     e.target.value = value;
 });
 
+// Проверка email при вводе
+document.getElementById('email').addEventListener('blur', async function() {
+    const email = this.value.trim();
+    
+    if (email && isValidEmail(email)) {
+        try {
+            const response = await fetch(`/api/users/check-email?email=${encodeURIComponent(email)}`);
+            const data = await response.json();
+            
+            if (data.exists) {
+                showError('Цей email вже використовується');
+            }
+        } catch (error) {
+            console.error('Ошибка при проверке email:', error);
+        }
+    }
+});
+
 // Показать ошибку
 function showError(message) {
     // Удаляем предыдущие сообщения
@@ -100,16 +166,17 @@ function showError(message) {
         margin: 10px 0;
         font-size: 14px;
         border: 1px solid #fcc;
+        animation: slideIn 0.3s ease-out;
     `;
     
     document.querySelector('.login-form').appendChild(errorDiv);
     
-    // Автоматически скрыть через 5 секунд
+    // Автоматически скрыть через 8 секунд (больше времени для чтения)
     setTimeout(() => {
         if (errorDiv.parentNode) {
             errorDiv.remove();
         }
-    }, 5000);
+    }, 8000);
 }
 
 // Показать успех
@@ -128,6 +195,7 @@ function showSuccess(message) {
         margin: 10px 0;
         font-size: 14px;
         border: 1px solid #cfc;
+        animation: slideIn 0.3s ease-out;
     `;
     
     document.querySelector('.login-form').appendChild(successDiv);
@@ -176,13 +244,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Добавить CSS для анимации ripple
+// Добавить CSS для анимации ripple и slideIn
 const style = document.createElement('style');
 style.textContent = `
     @keyframes ripple {
         to {
             transform: scale(4);
             opacity: 0;
+        }
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 `;

@@ -22,8 +22,8 @@
     </div>
 
     <div class="header-right">
-        <a href="#" class="btn btn-secondary">Зарееструватись</a>
-        <a href="#" class="btn btn-secondary">Ввійти в аккаунт</a>
+        <a href="/register" class="btn btn-secondary">Зарееструватись</a>
+        <a href="/login" class="btn btn-secondary">Ввійти в аккаунт</a>
     </div>
 </header>
 
@@ -50,15 +50,41 @@
                 </div>
             </div>
             
-            <div class="search-section guests">
+            <div class="search-section guests" onclick="openGuestsModal()">
                 <div class="icon" tabindex="-1">👤</div>
                 <div class="content">
-                    <div class="label" tabindex="-1">2 гостей</div>
+                    <div class="label" tabindex="-1" id="guestsLabel">2 гостей</div>
                     <div class="dropdown-arrow" tabindex="-1">▼</div>
                 </div>
             </div>
             
             <button class="search-btn" tabindex="-1">Знайти</button>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для выбора количества гостей -->
+    <div id="guestsModal" class="guests-modal" style="display: none;">
+        <div class="guests-overlay" onclick="closeGuestsModal()"></div>
+        <div class="guests-content">
+            <div class="guests-header">
+                <h3>Кількість гостей</h3>
+                <button class="close-btn" onclick="closeGuestsModal()">✕</button>
+            </div>
+            
+            <div class="guests-body">
+                <div class="guest-counter">
+                    <div class="counter-label">Гості</div>
+                    <div class="counter-controls">
+                        <button class="counter-btn" onclick="decreaseGuests()">−</button>
+                        <span class="counter-value" id="guestsCount">2</span>
+                        <button class="counter-btn" onclick="increaseGuests()">+</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guests-footer">
+                <button class="btn btn-primary" onclick="confirmGuestsSelection()">ОК</button>
+            </div>
         </div>
     </div>
     
@@ -111,6 +137,7 @@
 
 <script src="/js/calendar.js"></script>
 <script src="/js/cityPicker.js"></script>
+<script src="/js/guests.js"></script>
 <script src="/js/mainMap.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1N7wbWbOUD503nkjTZWSaKFDKj36M9A4&callback=initMap" async defer></script>
 

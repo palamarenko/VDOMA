@@ -1,6 +1,8 @@
+// Глобальная переменная для карты
+let map;
 
 function initMap() {
-    const map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 50.4501, lng: 30.5234 }, // Киев
         zoom: 10,
         gestureHandling: 'greedy', // Позволяет скроллить карту без Ctrl

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VDOMA.ua - Реєстрація</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <div class="logo-icon">🏠</div>
+                <h1 class="logo-text">VDOMA.ua</h1>
+            </div>
+            
+            <h2 class="login-title">Реєстрація</h2>
+            
+            <form class="login-form" id="registerForm">
+                <div class="form-group">
+                    <label for="firstName" class="form-label">Ім'я</label>
+                    <input type="text" id="firstName" name="firstName" class="form-input" placeholder="Ваше ім'я" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Прізвище</label>
+                    <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Ваше прізвище" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Ваша email адреса" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" class="form-label">Номер телефону</label>
+                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="+380" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Ваш пароль" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Підтвердіть пароль</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="Повторіть пароль" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Зареєструватися</button>
+            </form>
+            
+            <div class="divider">
+                <span class="divider-text">або</span>
+            </div>
+            
+            <button class="google-btn" onclick="signUpWithGoogle()">
+                <div class="google-icon">G</div>
+                <span>Зареєструватися через Google</span>
+            </button>
+            
+            <div class="signup-link">
+                <span>Вже є аккаунт?</span>
+                <a href="/login" class="signup-text">Увійти</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/register.js"></script>
+</body>
+</html> 

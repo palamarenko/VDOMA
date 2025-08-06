@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VDOMA.ua - Вхід</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <div class="logo-icon">🏠</div>
+                <h1 class="logo-text">VDOMA.ua</h1>
+            </div>
+            
+            <h2 class="login-title">Вхід в аккаунт</h2>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Ваша email адреса" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Ваш пароль" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Увійти</button>
+            </form>
+            
+            <div class="divider">
+                <span class="divider-text">або</span>
+            </div>
+            
+            <button class="google-btn" onclick="signInWithGoogle()">
+                <div class="google-icon">G</div>
+                <span>Увійти через Google</span>
+            </button>
+            
+            <div class="signup-link">
+                <span>Немає аккаунту?</span>
+                <a href="/register" class="signup-text">Зареєструватися</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/login.js"></script>
+</body>
+</html> 

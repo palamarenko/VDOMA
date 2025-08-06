@@ -222,6 +222,12 @@ main {
     user-select: none;     /* запрет выделения текста */
     outline: none;
     transition: background-color 0.2s;
+    -webkit-tap-highlight-color: transparent; /* убирает подсветку на мобильных */
+    -webkit-touch-callout: none; /* убирает контекстное меню на iOS */
+    -webkit-user-select: none; /* для Safari */
+    -moz-user-select: none; /* для Firefox */
+    -ms-user-select: none; /* для IE */
+    caret-color: transparent; /* убирает курсор ввода */
 }
 
 .clear-btn:hover {
@@ -288,9 +294,9 @@ main {
     background: transparent;
     font-size: 14px;
     color: #333;
-    font-weight: 500;
     width: 100%;
-    padding: 0;
+    -webkit-tap-highlight-color: transparent; /* убирает подсветку на мобильных */
+    -webkit-touch-callout: none; /* убирает контекстное меню на iOS */
 }
 
 .city-input::placeholder {
@@ -568,4 +574,113 @@ main {
 
 .btn-primary:hover {
     background-color: #002a6b;
+}
+
+/* Стили для модального окна гостей */
+.guests-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.guests-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.guests-content {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    width: 400px;
+    max-width: 90vw;
+    position: relative;
+    z-index: 2001;
+}
+
+.guests-header {
+    padding: 20px 20px 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.guests-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+
+.guests-body {
+    padding: 20px;
+}
+
+.guest-counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.counter-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.counter-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.counter-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.counter-btn:hover {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+}
+
+.counter-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.counter-value {
+    font-size: 18px;
+    font-weight: 500;
+    min-width: 30px;
+    text-align: center;
+}
+
+.guests-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
 } 

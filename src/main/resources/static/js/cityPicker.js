@@ -1,4 +1,5 @@
 let filteredCities = [];
+let currentMarker = null; // Текущий маркер на карте
 
 // Выбор города
 function selectCity(city, lat, lng) {
@@ -16,12 +17,28 @@ function selectCity(city, lat, lng) {
         latitude >= -90 && latitude <= 90 && 
         longitude >= -180 && longitude <= 180) {
         
+        // Удаляем предыдущий маркер, если он существует
+        if (currentMarker) {
+            currentMarker.setMap(null);
+        }
+        
+        // Создаем новый маркер
+        currentMarker = new google.maps.Marker({
+            position: { lat: latitude, lng: longitude },
+            map: map,
+            title: city,
+            icon: {
+                url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                scaledSize: new google.maps.Size(32, 32)
+            }
+        });
+        
         // Плавная анимация перехода к городу
         map.panTo({ lat: latitude, lng: longitude });
         
         // Увеличиваем зум после завершения анимации panTo
         const listener = map.addListener('idle', () => {
-            map.setZoom(8);
+            map.setZoom(12);
             google.maps.event.removeListener(listener);
         });
     } else {
@@ -34,6 +51,25 @@ function clearCity() {
     document.getElementById('cityInput').value = '';
     document.getElementById('cityInput').focus();
     document.getElementById('cityInput').blur();
+    
+    // Удаляем маркер при очистке поля
+    if (currentMarker) {
+        currentMarker.setMap(null);
+        currentMarker = null;
+    }
+}
+
+// Глобальная функция для удаления маркера
+function removeCityMarker() {
+    if (currentMarker) {
+        currentMarker.setMap(null);
+        currentMarker = null;
+    }
+}
+
+// Глобальная функция для получения текущего маркера
+function getCurrentMarker() {
+    return currentMarker;
 }
 
 // Инициализация
@@ -70,6 +106,15 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (e) {
         if (!e.target.closest('.destination')) {
             document.getElementById('autocomplete').style.display = 'none';
+            
+            // Если поле пустое, удаляем маркер
+            const cityInput = document.getElementById('cityInput');
+            if (cityInput && cityInput.value.trim() === '') {
+                if (currentMarker) {
+                    currentMarker.setMap(null);
+                    currentMarker = null;
+                }
+            }
         }
     });
 });
@@ -79,23 +124,43 @@ window.addEventListener('error', function (e) {
     console.error('ОШИБКА JavaScript:', e);
 });
 
-
 // Фильтрация городов по вводу
 async function filterCities(input) {
     try {
-        const response = await fetch(`http://127.0.0.1:8080/getCityByName?name=${encodeURIComponent(input)}`);
+        if (input.length < 2) {
+            filteredCities = [];
+            return;
+        }
+
+        const response = await fetch(`/api/settlements/search?query=${encodeURIComponent(input)}&limit=10`);
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-        const cities = await response.json();
-        console.log(":", cities);
+        const data = await response.json();
+        console.log("Результаты поиска:", data);
 
-        filteredCities = cities
+        if (data.success) {
+            filteredCities = data.results.map(settlement => {
+                const city = {
+                    name: settlement.name,
+                    lat: settlement.latitude || 0,
+                    lng: settlement.longitude || 0,
+                    type: settlement.type,
+                    region: settlement.region,
+                    district: settlement.district,
+                    population: settlement.population
+                };
+                console.log("Обработанный город:", city);
+                return city;
+            });
+        } else {
+            filteredCities = [];
+        }
 
     } catch (error) {
         console.error("Ошибка при запросе городов:", error);
+        filteredCities = [];
     }
 }
-
 
 // Показ автодополнения
 function showAutocomplete(input) {
@@ -116,15 +181,31 @@ function showAutocomplete(input) {
     dropdown.style.display = 'block';
 
     if (filteredCities.length > 0) {
-        dropdown.innerHTML = filteredCities.map(city => `
-            <div class="autocomplete-item" onclick="selectCity('${city.name}', ${city.lat}, ${city.lng})">
-                <div class="item-icon">📍</div>
-                <div class="item-content">
-                    <div class="item-title">${city.name}</div>
-                    <div class="item-subtitle">Україна</div>
+        dropdown.innerHTML = filteredCities.map(city => {
+            console.log("Отображение города:", city);
+            
+            // Формируем подзаголовок с информацией о типе и регионе
+            let subtitle = city.region || 'Україна';
+            if (city.type && city.region) {
+                subtitle = `${city.type}, ${city.region}`;
+            } else if (city.type) {
+                subtitle = city.type;
+            } else if (city.region) {
+                subtitle = city.region;
+            }
+            
+            console.log("Сформированный подзаголовок:", subtitle);
+            
+            return `
+                <div class="autocomplete-item" onclick="selectCity('${city.name}', ${city.lat}, ${city.lng})">
+                    <div class="item-icon">📍</div>
+                    <div class="item-content">
+                        <div class="item-title">${city.name}</div>
+                        <div class="item-subtitle">${subtitle}</div>
+                    </div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     } else {
         dropdown.style.display = 'none';
     }

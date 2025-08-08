@@ -1,4 +1,4 @@
-// Обработка формы регистрации
+// Обработка формы регистрации с Firebase
 document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -42,50 +42,56 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     submitBtn.disabled = true;
     
     try {
-        // Отправляем запрос на сервер
-        const response = await fetch('/api/users/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                phone: phone,
-                password: password
-            })
+        // Регистрация через Firebase
+        const userCredential = await firebaseAuth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        
+        // Обновляем профиль пользователя с дополнительными данными
+        await user.updateProfile({
+            displayName: `${firstName} ${lastName}`,
+            photoURL: null
         });
         
-        const data = await response.json();
+        // Сохраняем дополнительные данные на сервере
+        await saveUserDataToServer(user.uid, {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phone,
+            displayName: `${firstName} ${lastName}`
+        });
         
-        if (data.success) {
-            showSuccess(data.message);
-            // Сохраняем данные пользователя в localStorage
-            localStorage.setItem('user', JSON.stringify(data.user));
-            setTimeout(() => {
-                window.location.href = '/'; // Перенаправление на главную
-            }, 1000);
-        } else {
-            // Обработка различных типов ошибок при регистрации
-            if (data.message && data.message.includes('вже існує')) {
-                showError('Користувач з таким email вже існує. Спробуйте увійти або використайте інший email.');
-            } else if (data.message && data.message.includes('email')) {
-                showError('Невірний формат email. Перевірте правильність введення.');
-            } else if (data.message && data.message.includes('пароль')) {
-                showError('Пароль повинен містити мінімум 6 символів.');
-            } else {
-                showError(data.message || 'Помилка реєстрації. Спробуйте ще раз.');
-            }
-        }
+        showSuccess('Реєстрація успішна!');
+        
+        setTimeout(() => {
+            window.location.href = '/'; // Перенаправление на главную
+        }, 1000);
         
     } catch (error) {
         console.error('Ошибка при регистрации:', error);
-        if (error.name === 'TypeError' && error.message.includes('fetch')) {
-            showError('Помилка з\'єднання з сервером. Перевірте інтернет-з\'єднання.');
-        } else {
-            showError('Помилка сервера. Спробуйте пізніше.');
+        
+        // Обработка различных типов ошибок Firebase
+        let errorMessage = 'Помилка реєстрації. Спробуйте ще раз.';
+        
+        switch (error.code) {
+            case 'auth/email-already-in-use':
+                errorMessage = 'Користувач з таким email вже існує. Спробуйте увійти або використайте інший email.';
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'Невірний формат email. Перевірте правильність введення.';
+                break;
+            case 'auth/weak-password':
+                errorMessage = 'Пароль занадто слабкий. Використайте мінімум 6 символів.';
+                break;
+            case 'auth/operation-not-allowed':
+                errorMessage = 'Реєстрація через email/пароль не дозволена. Зверніться до адміністратора.';
+                break;
+            case 'auth/network-request-failed':
+                errorMessage = 'Помилка з\'єднання з сервером. Перевірте інтернет-з\'єднання.';
+                break;
         }
+        
+        showError(errorMessage);
     } finally {
         // Восстанавливаем кнопку
         submitBtn.textContent = originalText;
@@ -93,16 +99,77 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     }
 });
 
-// Google Sign-Up
-function signUpWithGoogle() {
-    // Здесь будет интеграция с Google OAuth
-    console.log('Реєстрація через Google');
-    
-    // Имитация Google регистрации
-    showSuccess('Реєстрація через Google успішна!');
-    setTimeout(() => {
-        window.location.href = '/';
-    }, 1000);
+// Google Sign-Up с Firebase
+document.getElementById('googleSignUpBtn').addEventListener('click', async function() {
+    try {
+        const result = await firebaseAuth.signInWithGoogle();
+        const user = result.user;
+        
+        // Сохраняем данные пользователя на сервере
+        await saveUserDataToServer(user.uid, {
+            firstName: user.displayName?.split(' ')[0] || '',
+            lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
+            email: user.email,
+            phone: '',
+            displayName: user.displayName,
+            photoURL: user.photoURL
+        });
+        
+        showSuccess('Реєстрація через Google успішна!');
+        
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
+        
+    } catch (error) {
+        console.error('Ошибка при регистрации через Google:', error);
+        
+        let errorMessage = 'Помилка реєстрації через Google. Спробуйте ще раз.';
+        
+        switch (error.code) {
+            case 'auth/popup-closed-by-user':
+                errorMessage = 'Вікно авторизації було закрито. Спробуйте ще раз.';
+                break;
+            case 'auth/popup-blocked':
+                errorMessage = 'Вікно авторизації було заблоковано браузером. Дозвольте спливаючі вікна для цього сайту.';
+                break;
+            case 'auth/cancelled-popup-request':
+                errorMessage = 'Операція була скасована. Спробуйте ще раз.';
+                break;
+            case 'auth/account-exists-with-different-credential':
+                errorMessage = 'Аккаунт з таким email вже існує з іншим методом авторизації.';
+                break;
+        }
+        
+        showError(errorMessage);
+    }
+});
+
+// Функция для сохранения данных пользователя на сервере
+async function saveUserDataToServer(uid, userData) {
+    try {
+        const token = await firebaseAuth.getCurrentUser().getIdToken();
+        
+        const response = await fetch('/api/users/firebase-register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                uid: uid,
+                ...userData
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (!data.success) {
+            console.error('Ошибка сохранения данных пользователя:', data.message);
+        }
+    } catch (error) {
+        console.error('Ошибка при сохранении данных пользователя:', error);
+    }
 }
 
 // Валидация email
@@ -132,24 +199,6 @@ document.getElementById('phone').addEventListener('input', function(e) {
     e.target.value = value;
 });
 
-// Проверка email при вводе
-document.getElementById('email').addEventListener('blur', async function() {
-    const email = this.value.trim();
-    
-    if (email && isValidEmail(email)) {
-        try {
-            const response = await fetch(`/api/users/check-email?email=${encodeURIComponent(email)}`);
-            const data = await response.json();
-            
-            if (data.exists) {
-                showError('Цей email вже використовується');
-            }
-        } catch (error) {
-            console.error('Ошибка при проверке email:', error);
-        }
-    }
-});
-
 // Показать ошибку
 function showError(message) {
     // Удаляем предыдущие сообщения
@@ -171,7 +220,7 @@ function showError(message) {
     
     document.querySelector('.login-form').appendChild(errorDiv);
     
-    // Автоматически скрыть через 8 секунд (больше времени для чтения)
+    // Автоматически скрыть через 8 секунд
     setTimeout(() => {
         if (errorDiv.parentNode) {
             errorDiv.remove();

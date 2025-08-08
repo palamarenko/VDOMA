@@ -1,4 +1,4 @@
-// Обработка формы входа
+// Обработка формы входа с Firebase
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -23,45 +23,45 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     submitBtn.disabled = true;
     
     try {
-        // Отправляем запрос на сервер
-        const response = await fetch('/api/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        });
+        // Вход через Firebase
+        const userCredential = await firebaseAuth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
         
-        const data = await response.json();
+        showSuccess('Успішний вхід!');
         
-        if (data.success) {
-            showSuccess(data.message);
-            // Сохраняем данные пользователя в localStorage
-            localStorage.setItem('user', JSON.stringify(data.user));
-            setTimeout(() => {
-                window.location.href = '/'; // Перенаправление на главную
-            }, 1000);
-        } else {
-            // Обработка различных типов ошибок
-            if (data.message && data.message.includes('Невірний email або пароль')) {
-                showError('Невірний email або пароль. Перевірте правильність введених даних.');
-            } else if (data.message && data.message.includes('не існує')) {
-                showError('Користувача з таким email не знайдено. Перевірте email або зареєструйтесь.');
-            } else {
-                showError(data.message || 'Помилка входу. Спробуйте ще раз.');
-            }
-        }
+        // Дополнительные данные пользователя будут сохранены в firebase-config.js
+        setTimeout(() => {
+            window.location.href = '/'; // Перенаправление на главную
+        }, 1000);
         
     } catch (error) {
         console.error('Ошибка при входе:', error);
-        if (error.name === 'TypeError' && error.message.includes('fetch')) {
-            showError('Помилка з\'єднання з сервером. Перевірте інтернет-з\'єднання.');
-        } else {
-            showError('Помилка сервера. Спробуйте пізніше.');
+        
+        // Обработка различных типов ошибок Firebase
+        let errorMessage = 'Помилка входу. Спробуйте ще раз.';
+        
+        switch (error.code) {
+            case 'auth/user-not-found':
+                errorMessage = 'Користувача з таким email не знайдено. Перевірте email або зареєструйтесь.';
+                break;
+            case 'auth/wrong-password':
+                errorMessage = 'Невірний пароль. Перевірте правильність введених даних.';
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'Невірний формат email. Перевірте правильність введення.';
+                break;
+            case 'auth/user-disabled':
+                errorMessage = 'Цей аккаунт був деактивований. Зверніться до підтримки.';
+                break;
+            case 'auth/too-many-requests':
+                errorMessage = 'Забагато невдалих спроб. Спробуйте пізніше.';
+                break;
+            case 'auth/network-request-failed':
+                errorMessage = 'Помилка з\'єднання з сервером. Перевірте інтернет-з\'єднання.';
+                break;
         }
+        
+        showError(errorMessage);
     } finally {
         // Восстанавливаем кнопку
         submitBtn.textContent = originalText;
@@ -69,17 +69,41 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     }
 });
 
-// Google Sign-In
-function signInWithGoogle() {
-    // Здесь будет интеграция с Google OAuth
-    console.log('Вхід через Google');
-    
-    // Имитация Google входа
-    showSuccess('Вхід через Google успішний!');
-    setTimeout(() => {
-        window.location.href = '/';
-    }, 1000);
-}
+// Google Sign-In с Firebase
+document.getElementById('googleSignInBtn').addEventListener('click', async function() {
+    try {
+        const result = await firebaseAuth.signInWithGoogle();
+        const user = result.user;
+        
+        showSuccess('Успішний вхід через Google!');
+        
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
+        
+    } catch (error) {
+        console.error('Ошибка при входе через Google:', error);
+        
+        let errorMessage = 'Помилка входу через Google. Спробуйте ще раз.';
+        
+        switch (error.code) {
+            case 'auth/popup-closed-by-user':
+                errorMessage = 'Вікно авторизації було закрито. Спробуйте ще раз.';
+                break;
+            case 'auth/popup-blocked':
+                errorMessage = 'Вікно авторизації було заблоковано браузером. Дозвольте спливаючі вікна для цього сайту.';
+                break;
+            case 'auth/cancelled-popup-request':
+                errorMessage = 'Операція була скасована. Спробуйте ще раз.';
+                break;
+            case 'auth/account-exists-with-different-credential':
+                errorMessage = 'Аккаунт з таким email вже існує з іншим методом авторизації.';
+                break;
+        }
+        
+        showError(errorMessage);
+    }
+});
 
 // Валидация email
 function isValidEmail(email) {
@@ -108,7 +132,7 @@ function showError(message) {
     
     document.querySelector('.login-form').appendChild(errorDiv);
     
-    // Автоматически скрыть через 8 секунд (больше времени для чтения)
+    // Автоматически скрыть через 8 секунд
     setTimeout(() => {
         if (errorDiv.parentNode) {
             errorDiv.remove();

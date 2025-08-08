@@ -41,6 +41,51 @@ class UserService(
         return userRepository.save(user)
     }
     
+    // Создание Firebase пользователя
+    fun createFirebaseUser(
+        firebaseUid: String,
+        email: String,
+        firstName: String,
+        lastName: String,
+        phone: String,
+        displayName: String? = null,
+        photoUrl: String? = null,
+        emailVerified: Boolean = false
+    ): UserModel {
+        
+        // Проверяем, не существует ли уже пользователь с таким Firebase UID
+        if (userRepository.existsByFirebaseUid(firebaseUid)) {
+            throw IllegalArgumentException("Користувач з таким Firebase UID вже існує")
+        }
+        
+        // Проверяем, не существует ли уже пользователь с таким email
+        if (userRepository.existsByEmail(email)) {
+            throw IllegalArgumentException("Користувач з таким email вже існує")
+        }
+        
+        // Создаем нового Firebase пользователя
+        val user = UserModel(
+            firstName = firstName.trim(),
+            lastName = lastName.trim(),
+            email = email.trim().lowercase(),
+            phone = phone.trim(),
+            password = null, // Firebase пользователи не имеют пароля в нашей базе
+            firebaseUid = firebaseUid,
+            displayName = displayName,
+            photoUrl = photoUrl,
+            emailVerified = emailVerified,
+            createdAt = LocalDateTime.now(),
+            updatedAt = LocalDateTime.now()
+        )
+        
+        return userRepository.save(user)
+    }
+    
+    // Поиск пользователя по Firebase UID
+    fun findByFirebaseUid(firebaseUid: String): UserModel? {
+        return userRepository.findByFirebaseUid(firebaseUid)
+    }
+    
     // Валидация данных регистрации
     private fun validateRegistrationData(
         firstName: String,

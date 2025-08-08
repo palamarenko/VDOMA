@@ -53,6 +53,49 @@ class UserController(
         }
     }
     
+    // Регистрация Firebase пользователя
+    @PostMapping("/firebase-register")
+    fun registerFirebaseUser(@RequestBody request: FirebaseRegisterRequest): ResponseEntity<Any> {
+        return try {
+            val user = userService.createFirebaseUser(
+                firebaseUid = request.uid,
+                email = request.email,
+                firstName = request.firstName,
+                lastName = request.lastName,
+                phone = request.phone,
+                displayName = request.displayName,
+                photoUrl = request.photoURL,
+                emailVerified = request.emailVerified ?: false
+            )
+            
+            val response = UserResponse(
+                id = user.id!!,
+                firstName = user.firstName,
+                lastName = user.lastName,
+                email = user.email,
+                phone = user.phone,
+                createdAt = user.createdAt.toString()
+            )
+            
+            ResponseEntity.ok(mapOf(
+                "success" to true,
+                "message" to "Користувача успішно зареєстровано! Вітаємо в системі!",
+                "user" to response
+            ))
+            
+        } catch (e: IllegalArgumentException) {
+            ResponseEntity.badRequest().body(mapOf(
+                "success" to false,
+                "message" to e.message
+            ))
+        } catch (e: Exception) {
+            ResponseEntity.internalServerError().body(mapOf(
+                "success" to false,
+                "message" to "Помилка сервера: ${e.message}"
+            ))
+        }
+    }
+    
     // Вход пользователя
     @PostMapping("/login")
     fun loginUser(@RequestBody request: LoginRequest): ResponseEntity<Any> {
@@ -113,4 +156,15 @@ class UserController(
             ))
         }
     }
-} 
+}
+
+data class FirebaseRegisterRequest(
+    val uid: String,
+    val email: String,
+    val firstName: String,
+    val lastName: String,
+    val phone: String,
+    val displayName: String? = null,
+    val photoURL: String? = null,
+    val emailVerified: Boolean? = null
+) 

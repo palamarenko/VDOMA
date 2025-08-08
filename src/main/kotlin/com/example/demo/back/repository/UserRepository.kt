@@ -10,4 +10,8 @@ interface UserRepository : JpaRepository<UserModel, Long> {
     fun findByEmail(email: String): UserModel?
     
     fun existsByEmail(email: String): Boolean
+    
+    fun findByFirebaseUid(firebaseUid: String): UserModel?
+    
+    fun existsByFirebaseUid(firebaseUid: String): Boolean
 } 

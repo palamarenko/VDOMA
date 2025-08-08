@@ -22,8 +22,20 @@ data class UserModel(
     @Column(name = "phone", nullable = false)
     val phone: String = "",
     
-    @Column(name = "password", nullable = false)
-    val password: String = "",
+    @Column(name = "password", nullable = true) // Теперь может быть null для Firebase пользователей
+    val password: String? = null,
+    
+    @Column(name = "firebase_uid", unique = true)
+    val firebaseUid: String? = null,
+    
+    @Column(name = "display_name")
+    val displayName: String? = null,
+    
+    @Column(name = "photo_url")
+    val photoUrl: String? = null,
+    
+    @Column(name = "email_verified", nullable = false)
+    val emailVerified: Boolean = false,
     
     @Column(name = "created_at")
     val createdAt: LocalDateTime = LocalDateTime.now(),
@@ -38,7 +50,11 @@ data class UserModel(
         lastName = "",
         email = "",
         phone = "",
-        password = "",
+        password = null,
+        firebaseUid = null,
+        displayName = null,
+        photoUrl = null,
+        emailVerified = false,
         createdAt = LocalDateTime.now(),
         updatedAt = LocalDateTime.now()
     )

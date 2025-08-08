@@ -17,10 +17,24 @@ function checkUserAuth() {
 function updateHeaderForLoggedUser(userData) {
     const headerRight = document.querySelector('.header-right');
     if (headerRight) {
+        // Получаем имя пользователя из разных возможных источников
+        let userName = 'Користувач';
+        
+        if (userData.displayName) {
+            userName = userData.displayName;
+        } else if (userData.firstName && userData.lastName) {
+            userName = `${userData.firstName} ${userData.lastName}`;
+        } else if (userData.firstName) {
+            userName = userData.firstName;
+        } else if (userData.email) {
+            // Используем email как fallback
+            userName = userData.email.split('@')[0];
+        }
+        
         headerRight.innerHTML = `
             <div class="user-info">
-                <span class="user-name">${userData.firstName} ${userData.lastName}</span>
-                <button class="btn btn-secondary" onclick="logout()">Вийти</button>
+                <span class="user-name">${userName}</span>
+                <button class="btn btn-secondary" onclick="performLogout()">Вийти</button>
             </div>
         `;
     }
@@ -38,10 +52,16 @@ function updateHeaderForGuest() {
 }
 
 // Выход пользователя
-function logout() {
-    localStorage.removeItem('user');
-    updateHeaderForGuest();
-    window.location.reload();
+function performLogout() {
+    // Используем глобальную функцию выхода из Firebase
+    if (window.firebaseLogout) {
+        window.firebaseLogout();
+    } else {
+        // Fallback для случаев без Firebase
+        localStorage.removeItem('user');
+        updateHeaderForGuest();
+        window.location.reload();
+    }
 }
 
 // Получение данных текущего пользователя

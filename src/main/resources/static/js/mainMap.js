@@ -18,4 +18,9 @@ function initMap() {
             }
         ]
     });
+    
+    // Инициализируем апартаменты после загрузки карты
+    if (window.apartmentFunctions && window.apartmentFunctions.initializeApartments) {
+        window.apartmentFunctions.initializeApartments();
+    }
 }

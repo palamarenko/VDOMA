@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VDOMA.ua - Главная</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/apartments.css">
     <style>
         #map {
             width: 100%;
@@ -22,6 +23,7 @@
             <a href="#" class="logo">VDOMA.ua</a>
             <div class="subtitle">Український сервіс для бронювання житла</div>
         </div>
+        <div class="apartments-count-header" id="apartments-count">Загрузка...</div>
     </div>
 
     <div class="header-right">
@@ -34,8 +36,59 @@
     <!-- Google Maps -->
     <div id="map"></div>
     
+    <!-- Список апартаментов -->
+    <div class="apartments-container">
+        <div class="apartments-filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Цена за ночь:</label>
+                    <input type="number" id="price-filter" placeholder="Макс. цена" min="0">
+                </div>
+                <div class="filter-group">
+                    <label>Рейтинг:</label>
+                    <select id="rating-filter">
+                        <option value="">Любой</option>
+                        <option value="4.5">4.5+</option>
+                        <option value="4.0">4.0+</option>
+                        <option value="3.5">3.5+</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Гости:</label>
+                    <select id="guests-filter">
+                        <option value="">Любое количество</option>
+                        <option value="1">1 гость</option>
+                        <option value="2">2 гостя</option>
+                        <option value="3">3 гостя</option>
+                        <option value="4">4+ гостей</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button id="reset-filters" class="reset-btn">Сбросить</button>
+                </div>
+            </div>
+        </div>
+        <div class="apartments-list" id="apartments-list">
+            <!-- Список апартаментов будет загружен динамически -->
+        </div>
+    </div>
+
+    <!-- Детальная информация об апартаменте -->
+    <div class="apartment-details-column" id="apartment-details-column">
+        <div class="apartment-details-header">
+            <button class="close-details-btn" id="close-details-btn">&times;</button>
+            <h3>Детали апартамента</h3>
+        </div>
+        <div class="apartment-details-content" id="apartment-details-content">
+            <!-- Детали апартамента будут загружены динамически -->
+        </div>
+    </div>
+    
+    
     <!-- Поисковый пикер поверх карты -->
-    <div class="search-container" style="position: absolute; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1000;">
+    <div class="search-container">
         <div class="search-bar">
             <div class="search-section destination">
                 <div class="icon">🛏️</div>
@@ -45,14 +98,14 @@
                 </div>
                 <div id="autocomplete" class="autocomplete-dropdown"></div>
             </div>
-            
+
             <div class="search-section dates" onclick="openCalendar()">
                 <div class="icon">📅</div>
                 <div class="content">
                     <div class="label" tabindex="-1">ср, 17 сент. — сб, 20 сент.</div>
                 </div>
             </div>
-            
+
             <div class="search-section guests" onclick="openGuestsModal()">
                 <div class="icon" tabindex="-1">👤</div>
                 <div class="content">
@@ -60,11 +113,11 @@
                     <div class="dropdown-arrow" tabindex="-1">▼</div>
                 </div>
             </div>
-            
+
             <button class="search-btn" tabindex="-1">Знайти</button>
         </div>
     </div>
-    
+
     <!-- Модальное окно для выбора количества гостей -->
     <div id="guestsModal" class="guests-modal" style="display: none;">
         <div class="guests-overlay" onclick="closeGuestsModal()"></div>
@@ -73,7 +126,7 @@
                 <h3>Кількість гостей</h3>
                 <button class="close-btn" onclick="closeGuestsModal()">✕</button>
             </div>
-            
+
             <div class="guests-body">
                 <div class="guest-counter">
                     <div class="counter-label">Гості</div>
@@ -84,13 +137,13 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="guests-footer">
                 <button class="btn btn-primary" onclick="confirmGuestsSelection()">ОК</button>
             </div>
         </div>
     </div>
-    
+
     <!-- Модальное окно с календарем -->
     <div id="calendarModal" class="calendar-modal" style="display: none;">
         <div class="calendar-overlay" onclick="closeCalendar()"></div>
@@ -101,7 +154,7 @@
                 </div>
                 <button class="close-btn" onclick="closeCalendar()">✕</button>
             </div>
-            
+
             <div class="calendar-body">
                 <div class="month-navigation">
                     <button class="nav-btn" onclick="previousMonth()">‹</button>
@@ -109,7 +162,7 @@
                     <div class="month-title">октябрь 2025 г.</div>
                     <button class="nav-btn" onclick="nextMonth()">›</button>
                 </div>
-                
+
                 <div class="calendar-grid">
                     <div class="month">
                         <div class="weekdays">
@@ -119,7 +172,7 @@
                             <!-- Дни сентября будут добавлены через JavaScript -->
                         </div>
                     </div>
-                    
+
                     <div class="month">
                         <div class="weekdays">
                             <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>НД</div>
@@ -129,7 +182,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="calendar-footer">
                     <button class="btn btn-primary" onclick="confirmDateSelection()">ОК</button>
                 </div>
@@ -144,11 +197,7 @@
 <script src="/js/guests.js"></script>
 <script src="/js/mainMap.js"></script>
 <script src="/js/userStatus.js"></script>
+<script src="/js/apartments.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1N7wbWbOUD503nkjTZWSaKFDKj36M9A4&callback=initMap" async defer></script>
-
-<!-- Календарь -->
-
-
-
 </body>
 </html>

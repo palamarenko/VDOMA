@@ -66,6 +66,17 @@ main {
     gap: 20px;
 }
 
+.apartments-count-header {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.9;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 .currency-section {
     display: flex;
     align-items: center;
@@ -147,6 +158,11 @@ main {
         justify-content: center;
     }
 
+    .apartments-count-header {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
     .register-link {
         display: none;
     }
@@ -154,8 +170,11 @@ main {
 
 /* Поисковый пикер */
 .search-container {
-    max-width: 800px;
-    margin: 40px auto;
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
     padding: 0 20px;
 }
 
@@ -164,21 +183,21 @@ main {
     border: 2px solid #ffb700;
     border-radius: 8px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    height: 60px;
+    width: 300px;
 }
 
 .search-section {
     display: flex;
     align-items: center;
     padding: 12px 20px;
-    border-right: 1px solid #e0e0e0;
-    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
     cursor: pointer;
     transition: background-color 0.2s;
-    height: 100%;
+    min-height: 50px;
 }
 
 .search-section:hover {
@@ -186,7 +205,7 @@ main {
 }
 
 .search-section:last-child {
-    border-right: none;
+    border-bottom: none;
 }
 
 .search-section .icon {
@@ -246,18 +265,18 @@ main {
     background: #003580;
     color: white;
     border: none;
-    padding: 0 32px;
+    padding: 16px 32px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s;
     border-radius: 0;
-    height: 100%;
     user-select: none;     /* запрет выделения текста */
     outline: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .search-btn:hover {
@@ -267,22 +286,15 @@ main {
 /* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .search-bar {
-        flex-direction: column;
-        border-radius: 8px;
+        width: 90%;
+        max-width: 300px;
     }
 
     .search-section {
-        border-right: none;
-        border-bottom: 1px solid #e0e0e0;
         padding: 12px 16px;
     }
 
-    .search-section:last-child {
-        border-bottom: none;
-    }
-
     .search-btn {
-        width: 100%;
         border-radius: 0 0 6px 6px;
     }
 }

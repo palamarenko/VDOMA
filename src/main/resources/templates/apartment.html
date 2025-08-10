@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apart Assistant on Smart Plaza - Детали апартамента</title>
+    <link rel="stylesheet" th:href="@{/css/apartment.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Верхняя секция -->
+        <div class="header-section">
+            <div class="transfer-badge">
+                <i class="fas fa-star"></i>
+                <span>Трансфер от/до аэропорта</span>
+            </div>
+            <h1 class="apartment-title">Apart Assistant on Smart Plaza</h1>
+            <div class="booking-confirmation">
+                <i class="fas fa-calendar-check"></i>
+                <span>4 июня 2025 вы забронировали здесь проживание.</span>
+            </div>
+            <div class="location-info">
+                <div class="address">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>26 Peremohy Avenue, Киев, 02000, Украина</span>
+                </div>
+                <div class="location-links">
+                    <a href="#" class="show-map-link">Великолепное расположение — показать на карте</a>
+                    <span class="metro-info">— Станция метро</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="main-content">
+            <div class="content-left">
+                <!-- Галерея изображений -->
+                <div class="image-gallery">
+                    <div class="main-image">
+                        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop" alt="SMART PLAZA Building">
+                        <div class="image-overlay">
+                            <button class="gallery-nav prev"><i class="fas fa-chevron-left"></i></button>
+                            <button class="gallery-nav next"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="thumbnail-grid">
+                        <div class="thumbnail">
+                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&h=150&fit=crop" alt="Bathroom">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&h=150&fit=crop" alt="Dining Area">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=200&h=150&fit=crop" alt="Bedroom">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=200&h=150&fit=crop" alt="Living Room">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=200&h=150&fit=crop" alt="Outdoor Area">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=150&fit=crop" alt="Sofa Room">
+                        </div>
+                        <div class="thumbnail more-photos">
+                            <div class="more-overlay">
+                                <span>+37 фотографий</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Описание апартамента -->
+                <div class="apartment-description">
+                    <h2>Описание</h2>
+                    <p>Apart Assistant on Smart Plaza — это отель в Киеве, расположенный в 3,8 км от Центрального железнодорожного вокзала Киев-Пассажирский, с видом на город и баром.</p>
+                    <p>Отель имеет 2 звезды, предлагает сад, кондиционированные номера, бесплатный Wi-Fi, частные ванные комнаты, круглосуточную стойку регистрации, банкомат и обмен валют.</p>
+                    <p>Каждый номер оборудован телевизором с плоским экраном, письменным столом, частной ванной комнатой, постельным бельем, полотенцами и холодильником.</p>
+                    <p>На территории есть детская площадка, а популярные местные развлечения включают прогулки. Отель находится в 4,2 км от Софийского собора и в 4,6 км от Владимирского собора.</p>
+                    <p>Парам особенно понравилось расположение — они оценили его на 9,6.</p>
+                    <p class="distance-note">Расчет расстояния выполнен с помощью OpenStreetMap.</p>
+                </div>
+
+                <!-- Удобства и услуги -->
+                <div class="amenities-section">
+                    <h2>Самые популярные удобства и услуги</h2>
+                    <div class="amenities-grid">
+                        <div class="amenity-item">
+                            <i class="fas fa-smoking-ban"></i>
+                            <span>Номера для некурящих</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-car"></i>
+                            <span>Трансфер от/до аэропорта</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-parking"></i>
+                            <span>Парковка (на территории)</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-wifi"></i>
+                            <span>Бесплатный Wi-Fi</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-dumbbell"></i>
+                            <span>Фитнес-центр</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-users"></i>
+                            <span>Семейные номера</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Круглосуточная стойка регистрации</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-cocktail"></i>
+                            <span>Бар</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-thermometer-half"></i>
+                            <span>Отопление</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-coffee"></i>
+                            <span>Кофеварка/чайник во всех номерах</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Боковая панель -->
+            <div class="sidebar">
+                <!-- Кнопки действий -->
+                <div class="action-buttons">
+                    <button class="btn-icon"><i class="fas fa-heart"></i></button>
+                    <button class="btn-icon"><i class="fas fa-share"></i></button>
+                    <button class="btn-primary">Забронировать</button>
+                    <p class="price-difference">Мы возвращаем разницу в цене</p>
+                </div>
+
+                <!-- Общий рейтинг -->
+                <div class="overall-rating">
+                    <div class="rating-header">
+                        <span class="rating-text">Превосходно</span>
+                        <div class="rating-score">
+                            <span class="score">9,1</span>
+                            <span class="reviews">444 отзыва</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Отзывы гостей -->
+                <div class="guest-feedback">
+                    <h3>Что понравилось гостям, которые здесь проживали</h3>
+                    <div class="feedback-quote">
+                        <p>"Месторасположение, вид из окна. Все есть для пребывания и питания в номере."</p>
+                        <div class="feedback-author">
+                            <span>К Коротченко</span>
+                            <i class="fas fa-flag"></i>
+                        </div>
+                    </div>
+                    <div class="location-rating">
+                        <span>Отличное расположение!</span>
+                        <span class="rating">9,6</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Карта -->
+                <div class="map-section">
+                    <div class="map-placeholder">
+                        <div class="map-pin">
+                            <i class="fas fa-map-pin"></i>
+                        </div>
+                        <div class="map-labels">
+                            <span>Київський зоопарк</span>
+                            <span>Шулявська</span>
+                            <span>Політехнічний інститут</span>
+                            <span>вулиця Борщагівська</span>
+                        </div>
+                    </div>
+                    <button class="btn-map">Показать на карте</button>
+                </div>
+
+                <!-- Преимущества -->
+                <div class="advantages">
+                    <h3>Преимущества этого варианта</h3>
+                    <div class="advantage-item">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Идеально подходит для того, чтобы остановиться на 3 ночи!</span>
+                    </div>
+                    <div class="advantage-item">
+                        <i class="fas fa-star"></i>
+                        <span>Отличное расположение: высокие оценки от недавно побывавших гостей (9,6)</span>
+                    </div>
+                    <div class="advantage-item">
+                        <span>В номерах:</span>
+                    </div>
+                    <div class="advantage-item">
+                        <i class="fas fa-building"></i>
+                        <span>Вид на город</span>
+                    </div>
+                    <div class="advantage-item">
+                        <i class="fas fa-parking"></i>
+                        <span>Парковка в отеле</span>
+                    </div>
+                </div>
+
+                <!-- Нижние кнопки -->
+                <div class="bottom-actions">
+                    <button class="btn-primary large">Забронировать</button>
+                    <button class="btn-secondary">
+                        <i class="fas fa-heart"></i>
+                        Сохранить жилье
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/apartment.js}"></script>
+</body>
+</html>

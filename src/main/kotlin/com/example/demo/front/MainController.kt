@@ -20,4 +20,9 @@ class MainController {
         return "register"
     }
 
+    @GetMapping("/apartment")
+    fun apartment(): String {
+        return "apartment"
+    }
+
 }

@@ -62,7 +62,7 @@ class ApartmentService(
                 bathrooms = 1,
                 maxGuests = 4,
                 amenities = "Wi-Fi,Кондиционер,Кухня,Стиральная машина,Бесплатная парковка",
-                imageUrls = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500,https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=500",
+                imageUrls = "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500,https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500",
                 isAvailable = true
             ),
             ApartmentModel(
@@ -79,7 +79,7 @@ class ApartmentService(
                 bathrooms = 1,
                 maxGuests = 3,
                 amenities = "Wi-Fi,Кондиционер,Кухня,Балкон,Вид на город",
-                imageUrls = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500,https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=500",
+                imageUrls = "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=500,https://images.unsplash.com/photo-1505693314120-0d443867891c?w=500",
                 isAvailable = true
             ),
             ApartmentModel(
@@ -96,7 +96,7 @@ class ApartmentService(
                 bathrooms = 1,
                 maxGuests = 2,
                 amenities = "Wi-Fi,Кондиционер,Кухня,Метро рядом,Магазины",
-                imageUrls = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500,https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=500",
+                imageUrls = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500,https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=500",
                 isAvailable = true
             ),
             ApartmentModel(
@@ -113,7 +113,7 @@ class ApartmentService(
                 bathrooms = 2,
                 maxGuests = 6,
                 amenities = "Wi-Fi,Кондиционер,Кухня,Терраса,Спортзал,Бассейн",
-                imageUrls = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500,https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=500",
+                imageUrls = "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=500,https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500",
                 isAvailable = true
             ),
             ApartmentModel(
@@ -130,7 +130,7 @@ class ApartmentService(
                 bathrooms = 1,
                 maxGuests = 5,
                 amenities = "Wi-Fi,Кухня,Сад,Бесплатная парковка,Тишина",
-                imageUrls = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500,https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=500",
+                imageUrls = "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=500,https://images.unsplash.com/photo-1505693314120-0d443867891c?w=500",
                 isAvailable = true
             ),
             ApartmentModel(
@@ -147,7 +147,7 @@ class ApartmentService(
                 bathrooms = 2,
                 maxGuests = 4,
                 amenities = "Wi-Fi,Кондиционер,Кухня,Вид на реку,Балкон",
-                imageUrls = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500,https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=500",
+                imageUrls = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500,https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=500",
                 isAvailable = true
             ),
             ApartmentModel(
@@ -164,7 +164,7 @@ class ApartmentService(
                 bathrooms = 1,
                 maxGuests = 3,
                 amenities = "Wi-Fi,Кухня,Исторический интерьер,Центр города",
-                imageUrls = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500,https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=500",
+                imageUrls = "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=500,https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500",
                 isAvailable = true
             ),
             ApartmentModel(
@@ -181,7 +181,7 @@ class ApartmentService(
                 bathrooms = 1,
                 maxGuests = 2,
                 amenities = "Wi-Fi,Кондиционер,Кухня,Бизнес-центр,Консьерж",
-                imageUrls = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500,https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=500",
+                imageUrls = "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=500,https://images.unsplash.com/photo-1505693314120-0d443867891c?w=500",
                 isAvailable = true
             )
         )

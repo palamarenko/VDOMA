@@ -187,9 +187,8 @@ function displayApartmentsOnMap() {
                 url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
                     <svg width="80" height="40" viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0" y="0" width="70" height="30" rx="15" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
-                        <polygon points="70,10 80,20 70,30" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
-                        <text x="35" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">${apartment.pricePerNight || 0}</text>
-                        <text x="35" y="32" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">грн</text>
+                        <polygon points="35,40 45,30 25,30" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+                        <text x="35" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">${apartment.pricePerNight || 0} грн</text>
                     </svg>
                 `)}`,
                 scaledSize: new google.maps.Size(80, 40),
@@ -228,9 +227,6 @@ function displayApartmentsOnMap() {
                 // Открываем новое информационное окно
                 infoWindow.open(map, marker);
                 currentInfoWindow = infoWindow;
-                
-                // Открываем детали апартамента в колонке
-                openApartmentDetails(apartment);
                 
                 // Выделяем апартамент в списке
                 selectApartment(apartment);
@@ -303,7 +299,7 @@ function displayApartmentsList() {
         apartmentsList.appendChild(apartmentCard);
     });
     
-    updateApartmentsCount();
+
 }
 
 // Создание карточки апартамента для списка
@@ -401,7 +397,7 @@ function displayFilteredApartments(filteredApartments) {
         apartmentsList.appendChild(card);
     });
     
-    updateApartmentsCount(filteredApartments.length);
+
 }
 
 // Сброс фильтров
@@ -583,23 +579,7 @@ function bookApartment(apartmentId) {
     }
 }
 
-// Обновление счетчика апартаментов
-function updateApartmentsCount(count = null) {
-    const countElement = document.getElementById('apartments-count');
-    if (!countElement) return;
-    
-    let apartmentCount = 0;
-    if (count !== null) {
-        apartmentCount = count;
-    } else if (Array.isArray(apartments)) {
-        apartmentCount = apartments.length;
-    } else {
-        console.warn('apartments не является массивом в updateApartmentsCount:', apartments);
-        apartmentCount = 0;
-    }
-    
-    countElement.textContent = `${apartmentCount} апартаментов`;
-}
+
 
 // Экспорт функций для использования в других файлах
 window.apartmentFunctions = {
@@ -615,6 +595,6 @@ window.apartmentFunctions = {
     closeApartmentDetails,
     filterApartments,
     resetFilters,
-    updateApartmentsCount,
+
     clearApartmentMarkers
 };
